@@ -142,10 +142,6 @@ To deploy the app on Vercel:
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Credits
-
-Special thanks to Antonio for his invaluable tutorial, which served as the foundation for building this app. You can find the tutorial [here](https://youtu.be/0OaDyjB9Ib8?si=D38xIsi46hG7M2sC).
-
 ## License
 
 [MIT License](LICENSE)
