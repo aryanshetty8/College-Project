@@ -13,8 +13,7 @@ const Heading = () => {
   return (
     <div className="max-w-3xl space-y-4">
       <h1 className="text-3xl font-bold sm:text-5xl md:text-6xl">
-        <span className="">Quickflow:</span> A Better & Open-Source Notion
-        Alternative
+        <span className="">Quickflow:</span>  Your Personal Knowledge Workspace
       </h1>
 
       <h3 className="text-base font-light opacity-70 sm:text-xl md:text-xl">
@@ -34,14 +33,14 @@ const Heading = () => {
           </Link>
         </Button>
       )}
-      {!isAuthenticated && !isLoading && (
+    {/*  {!isAuthenticated && !isLoading && (
         <SignInButton mode="modal">
-          <Button>
+         <Button>
             Get Quickflow free
             <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+          </Button> 
         </SignInButton>
-      )}
+      )}*/}
     </div>
   );
 };

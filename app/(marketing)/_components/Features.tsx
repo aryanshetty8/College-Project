@@ -69,7 +69,7 @@ const Features = () => {
                   </p>
                 </div>
 
-                <div className="mt-10 flex flex-col items-center justify-center gap-5 lg:flex-row lg:justify-start">
+               {/* <div className="mt-10 flex flex-col items-center justify-center gap-5 lg:flex-row lg:justify-start">
                   <a
                     href="#_"
                     className="inline-flex w-full items-center justify-center rounded-full border-2 border-black bg-black px-6 py-2.5 text-center text-sm font-medium text-white duration-200 hover:border-black hover:bg-transparent hover:text-black focus:outline-none focus-visible:outline-black focus-visible:ring-black dark:border-white dark:bg-white dark:text-black dark:hover:border-white/70 dark:hover:bg-transparent dark:hover:text-white dark:focus-visible:outline-white dark:focus-visible:ring-white lg:w-auto"
@@ -82,7 +82,7 @@ const Features = () => {
                   >
                     Learn more &nbsp; →
                   </a>
-                </div>
+                </div>*/}
               </div>
             </div>
           </div>
