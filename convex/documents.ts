@@ -1,5 +1,4 @@
 import { mutation, query } from "./_generated/server";
-import { Id } from "./_generated/dataModel";
 import { v } from "convex/values";
 
 /* ===================== CREATE DOCUMENT ===================== */
@@ -21,7 +20,10 @@ export const create = mutation({
       isArchived: false,
       isPublished: false,
 
-      // 🔔 Reminder fields
+      content: undefined,
+      coverImage: undefined,
+      icon: undefined,
+
       reminderTime: args.reminderTime,
       reminderEmail: args.reminderEmail,
       reminderSent: false,
@@ -47,7 +49,7 @@ export const getSidebar = query({
   },
 });
 
-/* ===================== GET DOCUMENT BY ID ===================== */
+/* ===================== GET BY ID ===================== */
 export const getById = query({
   args: { documentId: v.id("documents") },
   handler: async (ctx, args) => {
@@ -58,14 +60,13 @@ export const getById = query({
 
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
-    if (document.userId !== identity.subject)
-      throw new Error("Unauthorized");
+    if (document.userId !== identity.subject) throw new Error("Unauthorized");
 
     return document;
   },
 });
 
-/* ===================== UPDATE DOCUMENT ===================== */
+/* ===================== UPDATE ===================== */
 export const update = mutation({
   args: {
     id: v.id("documents"),
@@ -74,28 +75,24 @@ export const update = mutation({
     coverImage: v.optional(v.string()),
     icon: v.optional(v.string()),
     isPublished: v.optional(v.boolean()),
-
-    // 🔔 ADD THESE
     reminderTime: v.optional(v.number()),
     reminderEmail: v.optional(v.string()),
     reminderSent: v.optional(v.boolean()),
   },
-
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthenticated");
 
     const document = await ctx.db.get(args.id);
     if (!document) throw new Error("Not found");
-    if (document.userId !== identity.subject)
-      throw new Error("Unauthorized");
+    if (document.userId !== identity.subject) throw new Error("Unauthorized");
 
     const { id, ...rest } = args;
     return await ctx.db.patch(id, rest);
   },
 });
 
-/* ===================== ARCHIVE DOCUMENT ===================== */
+/* ===================== ARCHIVE ===================== */
 export const archive = mutation({
   args: { id: v.id("documents") },
   handler: async (ctx, args) => {
@@ -104,14 +101,13 @@ export const archive = mutation({
 
     const document = await ctx.db.get(args.id);
     if (!document) throw new Error("Not found");
-    if (document.userId !== identity.subject)
-      throw new Error("Unauthorized");
+    if (document.userId !== identity.subject) throw new Error("Unauthorized");
 
     return await ctx.db.patch(args.id, { isArchived: true });
   },
 });
 
-/* ===================== RESTORE DOCUMENT ===================== */
+/* ===================== RESTORE ===================== */
 export const restore = mutation({
   args: { id: v.id("documents") },
   handler: async (ctx, args) => {
@@ -120,14 +116,13 @@ export const restore = mutation({
 
     const document = await ctx.db.get(args.id);
     if (!document) throw new Error("Not found");
-    if (document.userId !== identity.subject)
-      throw new Error("Unauthorized");
+    if (document.userId !== identity.subject) throw new Error("Unauthorized");
 
     return await ctx.db.patch(args.id, { isArchived: false });
   },
 });
 
-/* ===================== DELETE DOCUMENT ===================== */
+/* ===================== DELETE ===================== */
 export const remove = mutation({
   args: { id: v.id("documents") },
   handler: async (ctx, args) => {
@@ -136,8 +131,7 @@ export const remove = mutation({
 
     const document = await ctx.db.get(args.id);
     if (!document) throw new Error("Not found");
-    if (document.userId !== identity.subject)
-      throw new Error("Unauthorized");
+    if (document.userId !== identity.subject) throw new Error("Unauthorized");
 
     return await ctx.db.delete(args.id);
   },
@@ -151,9 +145,7 @@ export const getTrash = query({
 
     return await ctx.db
       .query("documents")
-      .withIndex("by_user", (q) =>
-        q.eq("userId", identity.subject)
-      )
+      .withIndex("by_user", (q) => q.eq("userId", identity.subject))
       .filter((q) => q.eq(q.field("isArchived"), true))
       .order("desc")
       .collect();
@@ -168,15 +160,14 @@ export const getSearch = query({
 
     return await ctx.db
       .query("documents")
-      .withIndex("by_user", (q) =>
-        q.eq("userId", identity.subject)
-      )
+      .withIndex("by_user", (q) => q.eq("userId", identity.subject))
       .filter((q) => q.eq(q.field("isArchived"), false))
       .order("desc")
       .collect();
   },
 });
 
+/* ===================== COPY DOCUMENT ===================== */
 export const copy = mutation({
   args: {
     title: v.string(),
@@ -187,9 +178,7 @@ export const copy = mutation({
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Not authenticated");
-    }
+    if (!identity) throw new Error("Not authenticated");
 
     return await ctx.db.insert("documents", {
       title: args.title,
@@ -201,7 +190,8 @@ export const copy = mutation({
       isArchived: false,
       isPublished: false,
 
-      // 🔔 Reminder defaults (important!)
+      reminderTime: undefined,
+      reminderEmail: undefined,
       reminderSent: false,
     });
   },
