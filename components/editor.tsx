@@ -11,9 +11,7 @@ interface EditorProps {
   onChange: (value: string) => void;
   initialContent?: string;
   editable?: boolean;
-
-  // 🔔 REQUIRED REMINDER HANDLER
-  onSetReminder: () => void;
+  onSetReminder?: () => void;
 }
 
 const Editor = ({
@@ -43,15 +41,17 @@ const Editor = ({
 
   return (
     <div className="relative">
-      {/* 🔔 REMINDER BUTTON */}
-      <div className="flex justify-end mb-2">
-        <button
-          onClick={onSetReminder}
-          className="px-3 py-1 text-sm rounded bg-gray-700 text-white hover:bg-gray-600"
-        >
-          ⏰ Set Reminder
-        </button>
-      </div>
+      {/* 🔔 SHOW REMINDER ONLY IN EDIT MODE */}
+      {editable && onSetReminder && (
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={onSetReminder}
+            className="px-3 py-1 text-sm rounded bg-gray-700 text-white hover:bg-gray-600"
+          >
+            ⏰ Set Reminder
+          </button>
+        </div>
+      )}
 
       {/* 📝 BLOCKNOTE EDITOR */}
       <BlockNoteView
