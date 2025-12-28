@@ -1,17 +1,15 @@
-
-
-import ReminderChecker from "@/components/ReminderChecker";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import { Outfit } from "next/font/google";
-import type { Metadata } from "next";
-
-import { Toaster } from "sonner";
 import "./globals.css";
 
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ConvexClientProvider } from "@/components/providers/convex-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
-import { EdgeStoreProvider } from "../lib/edgestore";
+import { EdgeStoreProvider } from "@/lib/edgestore";
+import ReminderChecker from "@/components/ReminderChecker";
+import { Toaster } from "sonner";
 
 const outfit = Outfit({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -38,7 +36,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -52,7 +50,7 @@ export default function RootLayout({
               disableTransitionOnChange
               storageKey="quickflow-theme"
             >
-              {/* ✅ CLIENT REMINDER CHECKER */}
+              {/* ✅ Runs reminder logic safely */}
               <ReminderChecker />
 
               {children}
