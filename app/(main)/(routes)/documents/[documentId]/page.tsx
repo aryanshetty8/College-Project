@@ -18,19 +18,37 @@ interface DocumentIdPageProps {
 const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
   const Editor = useMemo(
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
-    [],
+    []
   );
+
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId,
   });
 
   const update = useMutation(api.documents.update);
 
+  // 📝 CONTENT SAVE
   const onChange = (content: string) => {
     update({
       id: params.documentId,
       content,
     });
+  };
+
+  // ⏰ REMINDER HANDLER
+  const onSetReminder = async () => {
+    const time = prompt("Enter reminder time (YYYY-MM-DD HH:MM)");
+    const email = prompt("Enter reminder email");
+
+    if (!time || !email) return;
+
+    await update({
+      id: params.documentId,
+      reminderTime: new Date(time).getTime(),
+      reminderEmail: email,
+    });
+
+    alert("Reminder set!");
   };
 
   if (document === undefined) {
@@ -58,7 +76,14 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
       <Cover url={document.coverImage} />
       <div className="mx-auto md:max-w-3xl lg:max-w-4xl">
         <Toolbar initialData={document} />
-        <Editor onChange={onChange} initialContent={document.content} />
+
+        {/* 📝 EDITOR WITH REMINDER */}
+        <Editor
+          editable
+          initialContent={document.content}
+          onChange={onChange}
+          onSetReminder={onSetReminder}
+        />
       </div>
     </div>
   );

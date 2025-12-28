@@ -3,6 +3,7 @@
 import { BlockNoteEditor, PartialBlock } from "@blocknote/core";
 import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/core/style.css";
+
 import { useTheme } from "next-themes";
 import { useEdgeStore } from "@/lib/edgestore";
 
@@ -10,17 +11,22 @@ interface EditorProps {
   onChange: (value: string) => void;
   initialContent?: string;
   editable?: boolean;
+
+  // 🔔 REQUIRED REMINDER HANDLER
+  onSetReminder: () => void;
 }
 
-const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
+const Editor = ({
+  onChange,
+  initialContent,
+  editable,
+  onSetReminder,
+}: EditorProps) => {
   const { resolvedTheme } = useTheme();
   const { edgestore } = useEdgeStore();
 
   const handleUpload = async (file: File) => {
-    const res = await edgestore.publicFiles.upload({
-      file,
-    });
-
+    const res = await edgestore.publicFiles.upload({ file });
     return res.url;
   };
 
@@ -36,7 +42,18 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   });
 
   return (
-    <div>
+    <div className="relative">
+      {/* 🔔 REMINDER BUTTON */}
+      <div className="flex justify-end mb-2">
+        <button
+          onClick={onSetReminder}
+          className="px-3 py-1 text-sm rounded bg-gray-700 text-white hover:bg-gray-600"
+        >
+          ⏰ Set Reminder
+        </button>
+      </div>
+
+      {/* 📝 BLOCKNOTE EDITOR */}
       <BlockNoteView
         editor={editor}
         theme={resolvedTheme === "dark" ? "dark" : "light"}

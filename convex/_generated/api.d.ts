@@ -9,6 +9,8 @@
  */
 
 import type * as documents from "../documents.js";
+import type * as reminder from "../reminder.js";
+import type * as sendremainder from "../sendremainder.js";
 
 import type {
   ApiFromModules,
@@ -18,6 +20,8 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   documents: typeof documents;
+  reminder: typeof reminder;
+  sendremainder: typeof sendremainder;
 }>;
 
 /**

@@ -1,8 +1,11 @@
+
+
+import ReminderChecker from "@/components/ReminderChecker";
+
 import { Outfit } from "next/font/google";
 import type { Metadata } from "next";
 
 import { Toaster } from "sonner";
-
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -23,12 +26,10 @@ export const metadata: Metadata = {
       {
         media: "(prefers-color-scheme: light)",
         url: "/logo.jpg",
-        href: "/logo.jpg",
       },
       {
         media: "(prefers-color-scheme: dark)",
         url: "/logo-dark.jpg",
-        href: "/logo-dark.jpg",
       },
     ],
   },
@@ -51,9 +52,13 @@ export default function RootLayout({
               disableTransitionOnChange
               storageKey="quickflow-theme"
             >
+              {/* ✅ CLIENT REMINDER CHECKER */}
+              <ReminderChecker />
+
+              {children}
+
               <Toaster position="bottom-center" />
               <ModalProvider />
-              {children}
             </ThemeProvider>
           </EdgeStoreProvider>
         </ConvexClientProvider>
