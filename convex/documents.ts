@@ -196,3 +196,42 @@ export const copy = mutation({
     });
   },
 });
+
+/* ===================== REMOVE COVER IMAGE ===================== */
+export const removeCoverImage = mutation({
+  args: {
+    id: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const document = await ctx.db.get(args.id);
+    if (!document) throw new Error("Not found");
+    if (document.userId !== identity.subject) throw new Error("Unauthorized");
+
+    return await ctx.db.patch(args.id, {
+      coverImage: undefined,
+    });
+  },
+});
+
+/* ===================== REMOVE ICON ===================== */
+export const removeIcon = mutation({
+  args: {
+    id: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const document = await ctx.db.get(args.id);
+    if (!document) throw new Error("Not found");
+    if (document.userId !== identity.subject)
+      throw new Error("Unauthorized");
+
+    return await ctx.db.patch(args.id, {
+      icon: undefined,
+    });
+  },
+});
