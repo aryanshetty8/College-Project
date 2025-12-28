@@ -1,4 +1,4 @@
-"use client";
+{/*"use client";
 
 import { Spinner } from "@/components/spinner";
 import { Button } from "@/components/ui/button";
@@ -40,9 +40,36 @@ const Heading = () => {
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button> 
         </SignInButton>
-      )}*/}
+      )}
+    </div>
+  );
+};
+
+export default Heading;*/}
+
+const Heading = () => {
+  return (
+    <div className="flex flex-col items-center text-center">
+      
+      {/* Small tag line above main heading */}
+      <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+        A Task Management System
+      </p>
+
+      {/* Main heading */}
+      <h1 className="max-w-4xl text-4xl font-bold text-black dark:text-white sm:text-5xl md:text-6xl">
+        Quickflow: Your Personal Knowledge Workspace
+      </h1>
+
+      {/* Sub heading */}
+     <span className="mb-4 rounded-full bg-gray-200 px-4 py-1 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+  A Task Management System
+</span>
+
+
     </div>
   );
 };
 
 export default Heading;
+
